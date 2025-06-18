@@ -1,7 +1,7 @@
 import { SearchIcon } from "@/app/_assets/icon";
 
 const navLinks = [
-  { label: "Food hublogb", href: "/food" },
+  { label: "Food blog", href: "/food" },
   { label: "Fitness & health blog", href: "/sport" },
   { label: "Tech blog", href: "/tech" },
   { label: "Money blog", href: "/money" },

@@ -42,7 +42,7 @@ export const PostCard = ({
   return (
     <div
       onClick={handleClick}
-      className="p-4 md:h-60 w-full flex md:flex-row flex-col items-center justify-center gap-4 cursor- hover:border-slate-300/60 hover:border border-transparent border rounded-lg duration-300"
+      className="p-4 md:h-60 w-full flex md:flex-row flex-col items-center justify-center gap-4 cursor-pointer hover:border-slate-300/60 hover:border border-transparent border rounded-lg duration-300"
     >
       <div className="md:h-full md:w-64 h-48 w-full rounded-lg bg-slate-200 relative">
         <Image
