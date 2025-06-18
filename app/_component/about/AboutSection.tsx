@@ -8,10 +8,10 @@ import { AboutIntro } from "./AboutIntro"
 //   { id: 4, href: "/category/money", imageUrl: "/image/Money.png" },
 // ];
 const cards = [
-  { id: 1, href: "#", imageUrl: "/image/Food.png" },
-  { id: 2, href: "#", imageUrl: "/image/Training.png" },
-  { id: 3, href: "#", imageUrl: "/image/Tech.png" },
-  { id: 4, href: "#", imageUrl: "/image/Money.png" },
+  { id: 1, href: "/food", imageUrl: "/image/Food.png" },
+  { id: 2, href: "/sport", imageUrl: "/image/Training.png" },
+  { id: 3, href: "/tech", imageUrl: "/image/Tech.png" },
+  { id: 4, href: "/money", imageUrl: "/image/Money.png" },
 ];
 
 export const AboutSection = () => {

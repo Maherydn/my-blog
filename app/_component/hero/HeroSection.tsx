@@ -1,26 +1,3 @@
-// "use client";
-
-// import { ArrowLeftIcon, ArrowRighttIcon } from "@/app/_assets/icon";
-
-// export const HeroSection = () => {
-//   return (
-//     <div className="relative w-full h-96">
-//       <div className="absolute inset-0 bg-[url(/Slider.png)] bg-cover bg-center" />
-//       <div className="absolute inset-0 bg-black/50" />
-
-//       <div className="relative z-10 flex items-center justify-between h-full w-full px-8">
-//         <div className="h-12 w-20">
-//          <ArrowLeftIcon/>
-//         </div>
-//         <h2 className="text-white text-6xl font-bold uppercase">food</h2>
-//         <div className="h-12 w-20">
-//           <ArrowRighttIcon/>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -33,12 +10,16 @@ const slides = [
     image: "/Slider.png",
   },
   {
-    title: "Drinks",
-    image: "/Slider.png",
+    title: "Tech",
+    image: "/Slider4.jpg",
   },
   {
-    title: "Dessert",
-    image: "/Slider.png",
+    title: "Sport",
+    image: "/Slider3.jpg",
+  },
+  {
+    title: "Money",
+    image: "/Slider5.jpg",
   },
 ];
 

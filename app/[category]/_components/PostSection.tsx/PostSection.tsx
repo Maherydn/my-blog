@@ -5,6 +5,7 @@ import { PostCard } from "./PostCard";
 
 type Post = {
   id: string;
+  slug: string;
   title: string;
   author: string;
   date: string;
@@ -15,10 +16,11 @@ type Post = {
   avatarUrl: string;
 };
 
-const fakePosts: Post[] = [
+const fakePosts: Post[] =[
   {
     id: "1",
     title: "Taste my delightful cookie",
+    slug: "taste-my-delightful-cookie",
     author: "Nami",
     date: "Mar 10",
     timeToRead: "7 min read",
@@ -30,6 +32,7 @@ const fakePosts: Post[] = [
   {
     id: "2",
     title: "Spicy ramen recipe",
+    slug: "spicy-ramen-recipe",
     author: "Zoro",
     date: "Apr 05",
     timeToRead: "5 min read",
@@ -41,6 +44,7 @@ const fakePosts: Post[] = [
   {
     id: "3",
     title: "Taste my delightful cookie",
+    slug: "taste-my-delightful-cookie",
     author: "Nami",
     date: "Mar 10",
     timeToRead: "7 min read",
@@ -52,6 +56,7 @@ const fakePosts: Post[] = [
   {
     id: "4",
     title: "Spicy ramen recipe",
+    slug: "spicy-ramen-recipe",
     author: "Zoro",
     date: "Apr 05",
     timeToRead: "5 min read",
@@ -63,6 +68,7 @@ const fakePosts: Post[] = [
   {
     id: "5",
     title: "Taste my delightful cookie",
+    slug: "taste-my-delightful-cookie",
     author: "Nami",
     date: "Mar 10",
     timeToRead: "7 min read",
@@ -74,6 +80,7 @@ const fakePosts: Post[] = [
   {
     id: "6",
     title: "Spicy ramen recipe",
+    slug: "spicy-ramen-recipe",
     author: "Zoro",
     date: "Apr 05",
     timeToRead: "5 min read",
@@ -85,6 +92,7 @@ const fakePosts: Post[] = [
   {
     id: "7",
     title: "Taste my delightful cookie",
+    slug: "taste-my-delightful-cookie",
     author: "Nami",
     date: "Mar 10",
     timeToRead: "7 min read",
@@ -96,6 +104,7 @@ const fakePosts: Post[] = [
   {
     id: "8",
     title: "Spicy ramen recipe",
+    slug: "spicy-ramen-recipe",
     author: "Zoro",
     date: "Apr 05",
     timeToRead: "5 min read",
@@ -103,9 +112,8 @@ const fakePosts: Post[] = [
     tags: ["noodle", "spicy", "japanese"],
     imageUrl: "/image/Food2.png",
     avatarUrl: "/image/avatar2.png",
-  },
-  // ➕ ajoute autant que tu veux...
-];
+  }
+]
 
 export const PostSection = () => {
 

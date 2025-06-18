@@ -1,10 +1,10 @@
 import { SearchIcon } from "@/app/_assets/icon";
 
 const navLinks = [
-  { label: "Food hub", href: "/blabla" },
-  { label: "Fitness & health hub", href: "/blabla" },
-  { label: "Tech hub", href: "/blabla" },
-  { label: "Money hub", href: "/blabla" },
+  { label: "Food hublogb", href: "/food" },
+  { label: "Fitness & health blog", href: "/sport" },
+  { label: "Tech blog", href: "/tech" },
+  { label: "Money blog", href: "/money" },
 ];
 
 export const NavMenu = () => {
