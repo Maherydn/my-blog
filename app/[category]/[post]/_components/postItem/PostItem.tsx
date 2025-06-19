@@ -21,7 +21,7 @@ type PostData = {
     shares: number;
   };
   userHasLiked: boolean;
-  markdown: string;
+  description: string;
 };
 
 type PostItemProps = {
@@ -70,7 +70,7 @@ export const PostItem = ({ data }: PostItemProps) => {
 
         {/* Contenu markdown */}
         <div className="w-full text-start space-y-4">
-          <TextMarkdown content={data.markdown} />
+          <TextMarkdown content={data.description} />
         </div>
       </div>
     

@@ -18,7 +18,7 @@ const postData = {
     shares: 5,
   },
   userHasLiked: false, // ✅ état initial du like par l'utilisateur
-  markdown: `# What is a Chocolate Chip Cookie?
+  description: `# What is a Chocolate Chip Cookie?
 
 A chocolate chip cookie is a sweet baked treat that is recognized by its butter flavor and the inclusion of chocolate chips. Some variations can include nuts, oatmeal or raisins as well. Commercially available formats of chocolate chips cookies include:
 
