@@ -119,7 +119,7 @@ export default function WritePage() {
 
         {/* Submit */}
         <div className="text-center pt-6">
-          <button className="bg-black text-white font-semibold text-2xl px-6 py-2 rounded-md hover:bg-gray-800 transition">
+          <button className="bg-black text-white font-semibold text-xl px-12 py-2 rounded-md hover:bg-gray-700 transition duration-300 cursor-pointer">
             PUBLISH BLOG
           </button>
         </div>
