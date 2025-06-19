@@ -95,9 +95,9 @@ export default function WritePage() {
         <div className="space-y-6">
           <div className="space-y-2">
             <label htmlFor="content" className="block text-xl font-medium text-gray-700">
-              Content{" "}
+              Content
               <span className="text-sm text-slate-400">
-                (Utilise Word pour formater ton texte afin d'obtenir un rendu similaire à l'exemple)
+                (Utilise Word pour formater ton texte afin d&apos;obtenir un rendu similaire à l&apos;exemple)
               </span>
             </label>
             <textarea
