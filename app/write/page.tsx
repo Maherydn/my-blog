@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import TextMarkdown from "../[category]/[post]/_components/TextMarkdown";
 import Image from "next/image";
+import MarkdownHelpModal from "./_components/MarkdownHelpModal";
 
 export default function WritePage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -26,7 +27,10 @@ export default function WritePage() {
       <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
         {/* Title */}
         <div>
-          <label htmlFor="title" className="block text-2xl font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="title"
+            className="block text-2xl font-medium text-gray-700 mb-1"
+          >
             Title
           </label>
           <input
@@ -40,7 +44,10 @@ export default function WritePage() {
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-xl font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="description"
+            className="block text-xl font-medium text-gray-700 mb-1"
+          >
             Description
           </label>
           <input
@@ -54,7 +61,9 @@ export default function WritePage() {
 
         {/* Category Radio Buttons */}
         <div>
-          <p className="text-xl font-medium text-gray-700 mb-2">Select a Category</p>
+          <p className="text-xl font-medium text-gray-700 mb-2">
+            Select a Category
+          </p>
           <div className="flex gap-6">
             {["tech", "lifestyle", "travel"].map((cat) => (
               <label key={cat} className="flex items-center gap-2">
@@ -78,7 +87,12 @@ export default function WritePage() {
           onClick={() => fileInputRef.current?.click()}
         >
           {imagePreview ? (
-            <Image src={imagePreview} alt="Preview" fill className="object-cover w-full h-full" />
+            <Image
+              src={imagePreview}
+              alt="Preview"
+              fill
+              className="object-cover w-full h-full"
+            />
           ) : (
             <span className="text-lg">IMAGE HERE : )</span>
           )}
@@ -93,13 +107,17 @@ export default function WritePage() {
 
         {/* Content */}
         <div className="space-y-6">
-          <div className="space-y-2">
-            <label htmlFor="content" className="block text-xl font-medium text-gray-700">
-              Content
-              <span className="text-sm text-slate-400">
-                (Utilise Word pour formater ton texte afin d&apos;obtenir un rendu similaire à l&apos;exemple)
-              </span>
-            </label>
+          <div className="space-y-2 ">
+            <div className="w-full flex items-center justify-between">
+              <label
+                htmlFor="content"
+                className="block text-xl font-medium text-gray-700"
+              >
+                Content
+                
+              </label>
+              <MarkdownHelpModal />
+            </div>
             <textarea
               id="content"
               name="content"
