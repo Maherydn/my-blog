@@ -25,7 +25,7 @@ export const TrendingPost = () => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 py-16 px-8 border border-slate-400/30 shadow-lg rounded-lg  w-full h-fit">
-      <h2 className="capitalize font-bold text-4xl text-slate-400">tags</h2>
+      <h2 className="capitalize font-bold text-4xl text-slate-400">trending post</h2>
       <div className="w-full flex flex-col p-4 gap-6 min-h-96">
         {tab1.map((item) => (
           <TrendingPostCard key={item.id} {...item} />
