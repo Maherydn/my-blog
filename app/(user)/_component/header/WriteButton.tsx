@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilIcon } from "@/app/_assets/icon";
+import { PencilIcon } from "../../_assets/icon";
 import { useRouter } from "next/navigation";
 
 export const WriteButton = () => {

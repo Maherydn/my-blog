@@ -1,4 +1,4 @@
-import { SearchIcon } from "@/app/_assets/icon";
+import { SearchIcon } from "../../_assets/icon";
 
 const navLinks = [
   { label: "Food blog", href: "/food" },

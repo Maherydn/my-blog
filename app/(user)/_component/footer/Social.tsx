@@ -4,7 +4,7 @@ import {
   InstagramIcon,
   LinkedinIcon,
   TwitterIcon,
-} from "@/app/_assets/icon";
+} from "../../_assets/icon";
 
 const icons = [
   { name: "Figma", component: FigmaIcon },

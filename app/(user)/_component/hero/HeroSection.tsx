@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ArrowLeftIcon, ArrowRighttIcon } from "@/app/_assets/icon";
+import { ArrowLeftIcon, ArrowRighttIcon } from "../../_assets/icon";
 
 const slides = [
   {
