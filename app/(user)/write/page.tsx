@@ -32,7 +32,7 @@ export default function WritePage() {
         : [...prev, tagId]
     );
   };
-  
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +43,7 @@ export default function WritePage() {
       categoryId,
       tagIds: selectedTagIds,
       content,
-      // Optionnel : inclure l'image dans une requête FormData si besoin
+      imageFile
     };
 
     console.log("Données à envoyer :", formData);
