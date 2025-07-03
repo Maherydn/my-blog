@@ -1,3 +1,5 @@
+import { useParams, useRouter } from "next/navigation";
+
 type TrendingPostCardProps = {
   id: string;
   author: string;
@@ -11,8 +13,15 @@ export const TrendingPostCard = ({
   description,
 }: // avatarUrl,
 TrendingPostCardProps) => {
+  const router = useRouter();
+  const params = useParams();
+
+  const href = `/${params.category}/'is-trending'`;
+  const handleClick = () => {
+    router.push(href);
+  };
   return (
-    <div className="w-full flex flex-col gap-1">
+    <div onClick={handleClick} className="w-full flex flex-col gap-1 cursor-pointer hover:border-slate-300/60 hover:border border-transparent border rounded-lg duration-300 px-8 py-1">
       <div className="flex items-center justify-between w-32">
         <div className="h-16 w-16 bg-slate-200 rounded-full">
           {/* <img src={avatarUrl} alt="" /> */}

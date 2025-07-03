@@ -1,4 +1,6 @@
+"use client";
 
+import { useState } from "react";
 import { PostSection } from "./_components/PostSection.tsx/PostSection";
 import { TagsFilter } from "./_components/TagsFilter";
 import { TrendingPost } from "./_components/trendingPost/TrendingPost";
@@ -97,8 +99,7 @@ const categoryData = {
       author: "Zoro",
       date: "Apr 05",
       timeToRead: "5 min read",
-      description:
-        "Discover the secrets of traditional Japanese ramen loremq kjfq lmqj fmljsq fh fjd qkjf mqjqf iojq lj...",
+      description: "Discover the secrets of traditional Japanese ramen...",
       tags: ["noodle", "spicy", "japanese"],
       imageUrl: "/image/Food2.png",
       avatarUrl: "/image/avatar2.png",
@@ -107,11 +108,23 @@ const categoryData = {
 };
 
 export default function Category() {
+   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  const filteredPosts = selectedTag
+    ? categoryData.posts.filter((post) => post.tags.includes(selectedTag))
+    : categoryData.posts;
+
   return (
     <div className="w-full h-fit py-4 md:py-12 md:px-24 flex md:flex-row flex-col-reverse items-start justify-center gap-4">
-      <PostSection posts={categoryData.posts} />
+      <PostSection posts={filteredPosts} />
       <aside className="flex flex-col md:w-lg gap-12">
-        <TagsFilter tags={categoryData.categoryTags} />
+        <TagsFilter
+          tags={categoryData.categoryTags}
+          selectedTag={selectedTag}
+          onTagClick={(tag) =>
+            setSelectedTag((prev) => (prev === tag ? null : tag))
+          }
+        />
         <TrendingPost />
       </aside>
     </div>
