@@ -16,7 +16,7 @@ TrendingPostCardProps) => {
   const router = useRouter();
   const params = useParams();
 
-  const href = `/${params.category}/'is-trending'`;
+  const href = `/${params.category}/is-trending`;
   const handleClick = () => {
     router.push(href);
   };
