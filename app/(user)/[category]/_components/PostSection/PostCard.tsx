@@ -5,6 +5,7 @@ import React from "react";
 import { PostTag } from "./PostTag";
 import { useRouter } from "next/navigation"; 
 import { useParams } from "next/navigation"; 
+import { truncateText } from "../../_utils/text";
 
 type PostCardProps = {
   id: string;
@@ -54,8 +55,8 @@ export const PostCard = ({
       </div>
 
       <div className="flex-1 h-full flex flex-col justify-between gap-2">
-        <div className="h-8 w-80 py-2 flex items-center justify-between">
-          <div className="flex items-center justify-between w-24">
+        <div className="h-8 w-full py-2 flex items-center justify-between">
+          <div className="flex items-center justify-start gap-4 w-34">
             <div className="h-8 w-8 bg-slate-200 rounded-full relative">
               {/* <Image
                 src={avatarUrl}
@@ -64,7 +65,7 @@ export const PostCard = ({
                 className="h-full w-full object-cover rounded-lg"
               /> */}
             </div>
-            <h3 className="text-lg text-slate-400 capitalize">{author}</h3>
+            <h3 className="text-lg text-slate-400 capitalize">{truncateText(author, 15)}</h3>
           </div>
           <div className="w-px h-full bg-slate-200"></div>
           <p className="text-lg text-slate-400 capitalize">{date}</p>
@@ -74,7 +75,7 @@ export const PostCard = ({
 
         <h3 className="text-2xl font-bold capitalize">{title}</h3>
 
-        <p className="text-lg text-slate-400 w-full">{description}</p>
+        <p className="text-lg text-slate-400 w-full">{truncateText(description, 100) + '...'}</p>
 
         <div className="w-full h-12 flex items-center justify-start gap-4">
           {tags.map((tag, index) => (

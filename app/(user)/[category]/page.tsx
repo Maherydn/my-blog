@@ -1,132 +1,87 @@
 "use client";
 
 import { useState } from "react";
-import { PostSection } from "./_components/PostSection.tsx/PostSection";
+import { notFound, useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+
+import { Post, PostSection } from "./_components/PostSection/PostSection";
 import { TagsFilter } from "./_components/TagsFilter";
 import { TrendingPost } from "./_components/trendingPost/TrendingPost";
-
-const categoryData = {
-  categoryTags: ["non_veg", "dessert", "popular", "japanese"],
-  posts: [
-    {
-      id: "1",
-      title: "Taste my delightful cookie",
-      slug: "taste-my-delightful-cookie",
-      author: "Nami",
-      date: "Mar 10",
-      timeToRead: "7 min read",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-      tags: ["non_veg", "dessert", "popular"],
-      imageUrl: "/Slider.png",
-      avatarUrl: "/image/avatar1.png",
-    },
-    {
-      id: "2",
-      title: "Spicy ramen recipe",
-      slug: "spicy-ramen-recipe",
-      author: "Zoro",
-      date: "Apr 05",
-      timeToRead: "5 min read",
-      description: "Discover the secrets of traditional Japanese ramen...",
-      tags: ["noodle", "spicy", "japanese"],
-      imageUrl: "/image/Food2.png",
-      avatarUrl: "/image/avatar2.png",
-    },
-    {
-      id: "3",
-      title: "Taste my delightful cookie",
-      slug: "taste-my-delightful-cookie",
-      author: "Nami",
-      date: "Mar 10",
-      timeToRead: "7 min read",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-      tags: ["non_veg", "dessert", "popular"],
-      imageUrl: "/image/Food.png",
-      avatarUrl: "/image/avatar1.png",
-    },
-    {
-      id: "4",
-      title: "Spicy ramen recipe",
-      slug: "spicy-ramen-recipe",
-      author: "Zoro",
-      date: "Apr 05",
-      timeToRead: "5 min read",
-      description: "Discover the secrets of traditional Japanese ramen...",
-      tags: ["noodle", "spicy", "japanese"],
-      imageUrl: "/image/Food2.png",
-      avatarUrl: "/image/avatar2.png",
-    },
-    {
-      id: "5",
-      title: "Taste my delightful cookie",
-      slug: "taste-my-delightful-cookie",
-      author: "Nami",
-      date: "Mar 10",
-      timeToRead: "7 min read",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-      tags: ["non_veg", "dessert", "popular"],
-      imageUrl: "/image/Food.png",
-      avatarUrl: "/image/avatar1.png",
-    },
-    {
-      id: "6",
-      title: "Spicy ramen recipe",
-      slug: "spicy-ramen-recipe",
-      author: "Zoro",
-      date: "Apr 05",
-      timeToRead: "5 min read",
-      description: "Discover the secrets of traditional Japanese ramen...",
-      tags: ["noodle", "spicy", "japanese"],
-      imageUrl: "/image/Food2.png",
-      avatarUrl: "/image/avatar2.png",
-    },
-    {
-      id: "7",
-      title: "Taste my delightful cookie",
-      slug: "taste-my-delightful-cookie",
-      author: "Nami",
-      date: "Mar 10",
-      timeToRead: "7 min read",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-      tags: ["non_veg", "dessert", "popular"],
-      imageUrl: "/image/Food.png",
-      avatarUrl: "/image/avatar1.png",
-    },
-    {
-      id: "8",
-      title: "Spicy ramen recipe",
-      slug: "spicy-ramen-recipe",
-      author: "Zoro",
-      date: "Apr 05",
-      timeToRead: "5 min read",
-      description: "Discover the secrets of traditional Japanese ramen...",
-      tags: ["noodle", "spicy", "japanese"],
-      imageUrl: "/image/Food2.png",
-      avatarUrl: "/image/avatar2.png",
-    },
-  ],
-};
+import { fetchPostsByCategory } from "./_lib/api/post";
+import { Title } from "./_components/Title";
 
 export default function Category() {
-   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const params = useParams();
+  const category = params?.category ?? "";
+
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["posts", category],
+    queryFn: () => fetchPostsByCategory(category),
+    staleTime: 1000 * 60 * 5,
+    enabled: !!category,
+  });
+
+  if (!category) {
+    return <p className="text-center text-gray-500">Catégorie non trouvée.</p>;
+  }
+
+  if (isError) {
+    notFound();
+    return (
+      <p className="text-center text-red-500">Erreur lors du chargement</p>
+    );
+  }
 
   const filteredPosts = selectedTag
-    ? categoryData.posts.filter((post) => post.tags.includes(selectedTag))
-    : categoryData.posts;
+    ? data?.posts.filter((post: Post) =>
+        post.tags?.some((tag: string) => tag === selectedTag)
+      )
+    : data?.posts ?? [];
 
   return (
-    <div className="w-full h-fit py-4 md:py-12 md:px-24 flex md:flex-row flex-col-reverse items-start justify-center gap-4">
-      <PostSection posts={filteredPosts} />
-      <aside className="flex flex-col md:w-lg gap-12">
-        <TagsFilter
-          tags={categoryData.categoryTags}
-          selectedTag={selectedTag}
-          onTagClick={(tag) =>
-            setSelectedTag((prev) => (prev === tag ? null : tag))
-          }
-        />
-        <TrendingPost />
-      </aside>
+    <div className="w-full h-fit py-4 md:py-12 md:px-24 px-4 flex flex-col md:flex-row gap-6 items-start justify-center">
+      {isLoading ? (
+        // skelet ou previsualisation de la page
+        <>
+          <div className="w-full md:flex-1 flex flex-col gap-4 p-4 md:p-6 border border-slate-200 rounded-lg shadow-sm">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="w-full h-32 bg-gray-300 animate-pulse rounded-lg shadow"
+              />
+            ))}
+          </div>
+          <aside className="w-full md:w-96 flex flex-col gap-6">
+            <div className="w-full h-60 bg-gray-300 animate-pulse rounded-lg shadow" />
+            <div className="w-full h-96 bg-gray-300 animate-pulse rounded-lg shadow" />
+          </aside>
+        </>
+      ) : (
+        <>
+          {filteredPosts && filteredPosts.length > 0 ? (
+            <PostSection posts={filteredPosts} />
+          ) : (
+            <div className="flex flex-col justify-center items-center gap-8 border border-slate-400/30 shadow-lg rounded-lg md:w-4xl w-full py-12 px-4">
+              <Title title="latest posts" />
+              <div className="flex items-center justify-center w-full h-96 ">
+                <p className="text-6xl text-slate-400 capitalize">Empty!</p>
+              </div>
+            </div>
+          )}
+          <aside className="flex flex-col md:w-96 gap-12">
+            <TagsFilter
+              tags={data?.categoryTags ?? []}
+              selectedTag={selectedTag}
+              onTagClick={(tag) =>
+                setSelectedTag((prev) => (prev === tag ? null : tag))
+              }
+            />
+            <TrendingPost />
+          </aside>
+        </>
+      )}
     </div>
   );
 }

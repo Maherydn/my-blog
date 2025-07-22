@@ -5,13 +5,15 @@ import CategorySelector from "./_components/forms/CategorySelector";
 import TagSelector from "./_components/forms/TagSelector";
 import ImageUploader from "./_components/forms/ImageUploader";
 import MarkdownEditor from "./_components/forms/MarkdownEditor";
+import { useMutation } from "@tanstack/react-query";
+import { createPost } from "./_lib/post";
+import { AxiosError } from "axios";
 
 export default function WritePage() {
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
+  const [categoryId, setCategoryId] = useState<number>();
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState("");
@@ -25,7 +27,7 @@ export default function WritePage() {
     reader.readAsDataURL(file);
   };
 
-  const handleTagChange = (tagId: string) => {
+  const handleTagChange = (tagId: number) => {
     setSelectedTagIds((prev) =>
       prev.includes(tagId)
         ? prev.filter((id) => id !== tagId)
@@ -33,29 +35,50 @@ export default function WritePage() {
     );
   };
 
+  const mutation = useMutation({
+    mutationFn: (formData: any) => createPost(formData),
+    onSuccess: (data) => {
+      console.log("Post créé avec succès :", data);
+    },
+    onError: (error: AxiosError) => {
+      console.error("Erreur API :", error);
+      console.log("Message d'erreur :", error.response?.data?.errors);
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = {
-      title,
-      description,
-      categoryId,
-      tagIds: selectedTagIds,
-      content,
-      imageFile
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("categoryId", categoryId?.toString() || "");
+    formData.append("content", content);
 
-    console.log("Données à envoyer :", formData);
-    // TODO: appel API
+    // Tags (en tableau)
+    selectedTagIds.forEach((tagId) => {
+      formData.append("tagsIds[]", tagId.toString());
+    });
+
+    // Fichier image
+    if (imageFile) {
+      formData.append("imageFile", imageFile);
+    }
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+    mutation.mutate(formData);
   };
 
   return (
-   <div className="max-w-2xl mx-auto px-4 py-8 font-sans text-gray-900">
+    <div className="max-w-2xl mx-auto px-4 py-8 font-sans text-gray-900">
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
         <div>
-          <label htmlFor="title" className="block text-2xl font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="title"
+            className="block text-2xl font-medium text-gray-700 mb-1"
+          >
             Title
           </label>
           <input
@@ -71,7 +94,10 @@ export default function WritePage() {
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-xl font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="description"
+            className="block text-xl font-medium text-gray-700 mb-1"
+          >
             Description
           </label>
           <input
@@ -86,10 +112,13 @@ export default function WritePage() {
         </div>
 
         {/* Category */}
-        <CategorySelector selectedId={categoryId} onChange={(id) => {
-          setCategoryId(id);
-          setSelectedTagIds([]); // Reset des tags
-        }} />
+        <CategorySelector
+          selectedId={categoryId}
+          onChange={(id) => {
+            setCategoryId(id);
+            setSelectedTagIds([]); // Reset des tags
+          }}
+        />
 
         {/* Tags */}
         {categoryId && (

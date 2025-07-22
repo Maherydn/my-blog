@@ -7,21 +7,23 @@ import { PostItemAuthor } from "./PostItemAuthor";
 import { PostItemActionBar } from "./PostItemActionsBar";
 
 type PostData = {
-  title: string;
-  subtitle: string;
+  post: {
+    title: string;
+    description: string;
+    imageUrl: string;
+    content: string;
+  };
   author: {
     name: string;
     avatarUrl: string;
     date: string;
   };
-  image: string;
   stats: {
     likes: number;
     comments: number;
     shares: number;
   };
   userHasLiked: boolean;
-  description: string;
 };
 
 type PostItemProps = {
@@ -38,41 +40,40 @@ export const PostItem = ({ data }: PostItemProps) => {
   };
 
   return (
-      <div className="flex flex-col gap-4 w-full">
-        {/* Auteur */}
-        <PostItemAuthor
-          title={data.title}
-          subtitle={data.subtitle}
-          authorName={data.author.name}
-          avatarUrl={data.author.avatarUrl}
+    <div className="flex flex-col gap-4 w-full">
+      {/* Auteur */}
+      <PostItemAuthor
+        title={data.post.title}
+        subtitle={data.post.description}
+        authorName={data.author.name}
+        avatarUrl={data.author.avatarUrl}
+      />
+
+      {/* Barre d'action */}
+      <PostItemActionBar
+        likeCount={likeCount}
+        commentCount={data.stats.comments}
+        shareCount={data.stats.shares}
+        isLiked={liked}
+        onLike={handleLike}
+        onComment={() => console.log("Comment clicked")}
+        onShare={() => console.log("Shared!")}
+      />
+
+      {/* Image */}
+      <div className="w-full md:h-96 h-48 relative">
+        <Image
+          src={data.post.imageUrl}
+          fill
+          alt="cookies"
+          className="inset-0"
         />
-
-        {/* Barre d'action */}
-        <PostItemActionBar
-          likeCount={likeCount}
-          commentCount={data.stats.comments}
-          shareCount={data.stats.shares}
-          isLiked={liked}
-          onLike={handleLike}
-          onComment={() => console.log("Comment clicked")}
-          onShare={() => console.log("Shared!")}
-        />
-
-        {/* Image */}
-        <div className="w-full md:h-96 h-48 relative">
-          <Image
-            src={data.image}
-            fill
-            alt="cookies"
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        {/* Contenu markdown */}
-        <div className="w-full text-start space-y-4">
-          <TextMarkdown content={data.description} />
-        </div>
       </div>
-    
+
+      {/* Contenu markdown */}
+      <div className="w-full text-start space-y-4">
+        <TextMarkdown content={data.post.content} />
+      </div>
+    </div>
   );
 };

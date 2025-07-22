@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -10,23 +11,41 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  // const handleLogin = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+
+  //   if (!email || !password) {
+  //     setError("Veuillez remplir tous les champs.");
+  //     return;
+  //   }
+
+  //   if (email === "admin@example.com" && password === "admin") {
+  //     alert("Connexion réussie !");
+  //         router.push('/');
+
+  //   } else {
+  //     setError("Email ou mot de passe incorrect.");
+  //   }
+
+  // };
+
+   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    try {
+      const res = await axios.post(process.env.NEXT_PUBLIC_API_URL + `/api/login`, {
+        email,
+        password,
+      });
+      // Stocker token dans localStorage (ou cookie selon sécurité souhaitée)
+      localStorage.setItem("token", res.data.token);
 
-    if (!email || !password) {
-      setError("Veuillez remplir tous les champs.");
-      return;
+      // Rediriger vers la page protégée
+      router.push("/");
+    } catch (err) {
+      setError("Email ou mot de passe incorrect");
+      console.error(err);
     }
-
-    if (email === "admin@example.com" && password === "admin") {
-      alert("Connexion réussie !");
-          router.push('/');
-
-    } else {
-      setError("Email ou mot de passe incorrect.");
-    }
-
   };
 
   return (

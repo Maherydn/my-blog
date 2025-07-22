@@ -11,9 +11,9 @@ type TagsFilterProps = {
 
 export const TagsFilter = ({ tags, selectedTag, onTagClick }: TagsFilterProps) => {
   return (
-    <div className="flex flex-col justify-center items-center gap-8 p-16 border border-slate-400/30 shadow-lg rounded-lg w-full h-fit">
+    <div className="flex flex-col justify-center items-center gap-8 p-4 border border-slate-400/30 shadow-lg rounded-lg w-full h-fit">
       <Title title="tags" />
-      <div className="w-full flex flex-wrap items-center md:justify-start justify-center gap-4">
+      <div className="w-full flex flex-wrap items-center md:justify-evenly justify-center gap-2">
         {tags.map((tag, index) => (
           <button
             key={index}
