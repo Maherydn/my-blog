@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -30,13 +31,16 @@ export default function LoginPage() {
 
   // };
 
-   const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post(process.env.NEXT_PUBLIC_API_URL + `/api/login`, {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + `/api/login`,
+        {
+          email,
+          password,
+        }
+      );
       // Stocker token dans localStorage (ou cookie selon sécurité souhaitée)
       localStorage.setItem("token", res.data.token);
 
@@ -50,7 +54,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4"
+      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 "
       style={{
         backgroundImage: "url('/bg.jpg')",
       }}
@@ -115,6 +119,15 @@ export default function LoginPage() {
         >
           Se connecter
         </button>
+        <p className="text-center text-white text-sm mt-6">
+          Pas encore de compte ?
+          <Link
+            href="/sign-up"
+            className="text-blue-400 font-medium hover:underline ml-4"
+          >
+            S&apos;inscrire
+          </Link>
+        </p>
       </form>
     </div>
   );

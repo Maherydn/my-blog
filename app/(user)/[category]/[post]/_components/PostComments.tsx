@@ -1,43 +1,75 @@
+"use client";
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { createComment, fetchPostComment } from "../_lib/api/post";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useState, FormEvent } from "react";
+import toast from "react-hot-toast";
+import { useCounterStore } from "../_store/useCounterStore";
+
+// ✅ Type d’un commentaire
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  user: {
+    id: string;
+    name: string;
+  };
+}
+
+// ✅ Type de la réponse de l’API pour les commentaires
+interface CommentsResponse {
+  comments: Comment[];
+}
+
+// ✅ Type des données envoyées pour créer un commentaire
+interface CommentData {
+  content: string;
+}
+
+// ✅ Type de la réponse à la création d’un commentaire
+interface CreateCommentResponse {
+  success: boolean;
+  comment: Comment;
+}
 
 export const PostComments = () => {
-  const [content, setContent] = useState("");
-  const params = useParams();
+  const [content, setContent] = useState<string>("");
+  const params = useParams<{ post?: string }>();
   const postSlug = params?.post ?? "";
 
-  const {
-  data,
-  isLoading,
-  isError,
-  refetch, // N'oublie pas d'extraire refetch ici
-} = useQuery({
-  queryKey: ["comments", postSlug],
-  queryFn: () => fetchPostComment(postSlug),
-  staleTime: 1000 * 60 * 5,
-  enabled: !!postSlug,
-});
+  const { increment } = useCounterStore();
 
-const mutation = useMutation({
-  mutationFn: (commentData: any) => createComment(postSlug, commentData),
-  onSuccess: (data) => {
-    console.log("Commentaire créé avec succès :", data);
-    refetch(); // Appel direct ici, pas besoin de onClick
-  },
-  onError: (error: AxiosError) => {
-    console.error("Erreur API :", error);
-    console.log("Message d'erreur :", error.response?.data?.errors);
-  },
-});
+  const { data, isLoading, isError, refetch } = useQuery<
+    CommentsResponse,
+    AxiosError
+  >({
+    queryKey: ["comments", postSlug],
+    queryFn: () => fetchPostComment(postSlug),
+    staleTime: 1000 * 60 * 5,
+    enabled: !!postSlug,
+  });
 
+  const mutation = useMutation<CreateCommentResponse, AxiosError, CommentData>({
+    mutationFn: (commentData) => createComment(postSlug, commentData),
+    onSuccess: () => {
+      refetch();
+      toast.success("Commentaire envoyer!");
+      increment()
+    },
+    onError: () => {
+      // console.error("Erreur API :", error);
+      // console.log("Message d'erreur :", error.response?.data);
+      toast.error("Commentaire non envoyer!");
+    },
+  });
 
-  const handleClick = (e: React.FormEvent) => {
+  const handleClick = (e: FormEvent) => {
     e.preventDefault();
-
-    mutation.mutate({content});
+    mutation.mutate({ content });
+    setContent("");
   };
 
   if (isLoading) {
@@ -54,7 +86,7 @@ const mutation = useMutation({
   }
 
   return (
-    <div className="w-full flex flex-col gap-12">
+    <div id="comments" className="w-full flex flex-col gap-12">
       <h3 className="capitalize text-xl text-slate-900 px-6 py-1 rounded-lg border border-slate-200/20 shadow-lg w-fit">
         comments
       </h3>
@@ -71,7 +103,7 @@ const mutation = useMutation({
 
         <button
           onClick={handleClick}
-          className="text-white uppercase text-xl bg-black px-6 py-2 rounded-lg shadow-lg h-fit"
+          className="text-white uppercase text-xl bg-black px-6 py-2 rounded-lg shadow-lg h-fit cursor-pointer"
         >
           send
         </button>
@@ -82,9 +114,9 @@ const mutation = useMutation({
           No comments yet.
         </div>
       ) : (
-        data.comments.map((comment: any, index: number) => (
+        data.comments.map((comment) => (
           <div
-            key={index}
+            key={comment.id}
             className="flex flex-col gap-12 border-l-2 border-l-slate-400/40 shadow-lg w-full py-6 pl-6 md:pl-24 pr-6"
           >
             <div className="flex flex-col gap-4">

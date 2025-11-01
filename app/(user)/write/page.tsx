@@ -1,13 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import CategorySelector from "./_components/forms/CategorySelector";
 import TagSelector from "./_components/forms/TagSelector";
 import ImageUploader from "./_components/forms/ImageUploader";
 import MarkdownEditor from "./_components/forms/MarkdownEditor";
 import { useMutation } from "@tanstack/react-query";
-import { createPost } from "./_lib/post";
+import { createPost, CreatePostType } from "./_lib/post";
 import { AxiosError } from "axios";
+import toast from "react-hot-toast";
+
+interface CreatePostResponse {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  imageUrl?: string;
+  categoryId: number;
+  tags: { id: number; name: string }[];
+  createdAt: string;
+}
 
 export default function WritePage() {
   const [title, setTitle] = useState("");
@@ -21,10 +33,18 @@ export default function WritePage() {
   const handleImageChange = (file: File) => {
     setImageFile(file);
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result as string);
-    };
+    reader.onloadend = () => setImagePreview(reader.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setCategoryId(undefined);
+    setSelectedTagIds([]);
+    setImagePreview(null);
+    setImageFile(null);
+    setContent("");
   };
 
   const handleTagChange = (tagId: number) => {
@@ -35,45 +55,42 @@ export default function WritePage() {
     );
   };
 
-  const mutation = useMutation({
-    mutationFn: (formData: any) => createPost(formData),
-    onSuccess: (data) => {
-      console.log("Post créé avec succès :", data);
+  // ✅ Mutation typée avec CreatePostType
+  const mutation = useMutation<CreatePostResponse, AxiosError, CreatePostType>({
+    mutationFn: (variables) => createPost(variables),
+    onSuccess: () => {
+      // console.log("✅ Post créé avec succès :", data);
+      toast.success("Post créé avec succès ");
+      resetForm();
     },
-    onError: (error: AxiosError) => {
-      console.error("Erreur API :", error);
-      console.log("Message d'erreur :", error.response?.data?.errors);
+    onError: () => {
+      // console.error("❌ Erreur API :", error);
+      // console.log("Détails :", error.response?.data);
+      toast.error("Une erreur est survenue");
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("categoryId", categoryId?.toString() || "");
-    formData.append("content", content);
+    if (!categoryId) return;
 
-    // Tags (en tableau)
-    selectedTagIds.forEach((tagId) => {
-      formData.append("tagsIds[]", tagId.toString());
-    });
+    const postData: CreatePostType = {
+      title,
+      description,
+      categoryId,
+      content,
+      tagsIds: selectedTagIds,
+      imageFile,
+    };
 
-    // Fichier image
-    if (imageFile) {
-      formData.append("imageFile", imageFile);
-    }
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-    mutation.mutate(formData);
+    mutation.mutate(postData);
+
   };
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 font-sans text-gray-900">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title */}
         <div>
           <label
             htmlFor="title"
@@ -84,7 +101,6 @@ export default function WritePage() {
           <input
             type="text"
             id="title"
-            name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full text-2xl font-bold px-2 py-1 border-b border-gray-300 outline-none"
@@ -92,7 +108,6 @@ export default function WritePage() {
           />
         </div>
 
-        {/* Description */}
         <div>
           <label
             htmlFor="description"
@@ -103,7 +118,6 @@ export default function WritePage() {
           <input
             type="text"
             id="description"
-            name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full text-xl text-gray-600 px-2 py-1 border-b border-gray-300 outline-none"
@@ -111,16 +125,14 @@ export default function WritePage() {
           />
         </div>
 
-        {/* Category */}
         <CategorySelector
           selectedId={categoryId}
           onChange={(id) => {
             setCategoryId(id);
-            setSelectedTagIds([]); // Reset des tags
+            setSelectedTagIds([]);
           }}
         />
 
-        {/* Tags */}
         {categoryId && (
           <TagSelector
             categoryId={categoryId}
@@ -129,13 +141,10 @@ export default function WritePage() {
           />
         )}
 
-        {/* Image */}
         <ImageUploader preview={imagePreview} onChange={handleImageChange} />
 
-        {/* Markdown */}
         <MarkdownEditor content={content} onChange={setContent} />
 
-        {/* Submit */}
         <div className="text-center pt-6">
           <button
             type="submit"

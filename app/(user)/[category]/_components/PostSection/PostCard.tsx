@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation"; 
 import { truncateText } from "../../_utils/text";
 
-type PostCardProps = {
+interface PostCardProps {
   id: string;
   slug: string;
   title: string;

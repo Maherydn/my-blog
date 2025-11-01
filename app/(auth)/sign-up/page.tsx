@@ -1,6 +1,10 @@
 "use client";
 
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const [username, setUsername] = useState("");
@@ -9,7 +13,9 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSignup = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -22,8 +28,24 @@ export default function SignupPage() {
       setError("Les mots de passe ne correspondent pas.");
       return;
     }
+    
+    try {
+      await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + `/api/users`,
+        {
+          email,
+          password,
+          name: username
+        }
+      );
+      toast.success("Compte créer");
 
-    alert("Compte créé avec succès !");
+      // Rediriger vers la page protégée
+      router.push("/login");
+    } catch (err) {
+      setError("Email ou mot de passe incorrect");
+      console.error(err);
+    }
   };
 
   return (
@@ -49,7 +71,10 @@ export default function SignupPage() {
 
         {/* Nom d'utilisateur */}
         <div className="mb-6">
-          <label htmlFor="username" className="block text-2xl text-white mb-1 font-semibold">
+          <label
+            htmlFor="username"
+            className="block text-2xl text-white mb-1 font-semibold"
+          >
             Nom d utilisateur
           </label>
           <input
@@ -67,7 +92,10 @@ export default function SignupPage() {
 
         {/* Email */}
         <div className="mb-6">
-          <label htmlFor="email" className="block text-2xl text-white mb-1 font-semibold">
+          <label
+            htmlFor="email"
+            className="block text-2xl text-white mb-1 font-semibold"
+          >
             Email
           </label>
           <input
@@ -85,7 +113,10 @@ export default function SignupPage() {
 
         {/* Mot de passe */}
         <div className="mb-6">
-          <label htmlFor="password" className="block text-2xl text-white mb-1 font-semibold">
+          <label
+            htmlFor="password"
+            className="block text-2xl text-white mb-1 font-semibold"
+          >
             Mot de passe
           </label>
           <input
@@ -125,10 +156,19 @@ export default function SignupPage() {
         {/* Bouton */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white text-xl py-2 rounded transition duration-300 hover:bg-blue-700 hover:shadow-md"
+          className="w-full bg-blue-600 text-white text-xl py-2 rounded transition duration-300 hover:bg-blue-700 hover:shadow-md cursor-pointer"
         >
           S inscrire
         </button>
+        <p className="text-center text-white text-sm mt-6">
+          Déjà un compte ?
+          <Link
+            href="/login"
+            className="text-blue-400 font-medium hover:underline ml-2"
+          >
+            Se connecter
+          </Link>
+        </p>
       </form>
     </div>
   );

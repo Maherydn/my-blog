@@ -3,7 +3,7 @@
 import { Title } from "../Title";
 import { PostCard } from "./PostCard";
 
-export type Post = {
+export interface Post {
   id: string;
   slug: string;
   title: string;
@@ -16,7 +16,7 @@ export type Post = {
   avatarUrl: string;
 };
 
-type Props = {
+interface Props {
   posts: Post[];
 };
 

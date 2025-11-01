@@ -33,23 +33,23 @@ export const CommentIcon: React.FC = () => (
     <path
       d="M11 21C16.5228 21 21 16.5228 21 11C21 5.47715 16.5228 1 11 1C5.47715 1 1 5.47715 1 11C1 13.663 2.04094 16.0829 3.73812 17.875L1.72681 20.1705C1.44361 20.4937 1.67314 21 2.10288 21H11Z"
       stroke="black"
-      stroke-opacity="0.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeOpacity="0.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M6 8H16"
       stroke="black"
-      stroke-opacity="0.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeOpacity="0.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M6 12H10"
       stroke="black"
-      stroke-opacity="0.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeOpacity="0.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -65,9 +65,9 @@ export const ShareIcon: React.FC = () => (
     <path
       d="M21 1L1 8.38171L10.5833 12.5339M21 1L14.3333 23.1451L10.5833 12.5339M21 1L10.5833 12.5339"
       stroke="black"
-      stroke-opacity="0.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeOpacity="0.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

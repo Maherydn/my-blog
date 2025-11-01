@@ -1,4 +1,4 @@
-import { SearchIcon } from "../../_assets/icon";
+// import { SearchIcon } from "../../_assets/icon";
 
 const navLinks = [
   { label: "Food", href: "/food" },
@@ -11,7 +11,6 @@ export const NavMenu = () => {
   return (
     <div className="md:w-4xl flex h-full justify-center items-center">
       <ul className="flex-1 hidden md:flex justify-around items-center text-slate-500 capitalize">
-
         {navLinks.map(({ label, href }) => (
           <li key={label}>
             <a
@@ -23,11 +22,10 @@ export const NavMenu = () => {
             </a>
           </li>
         ))}
-    
       </ul>
-      <div className="h-8 w-8 cursor-pointer">
+      {/* <div className="h-8 w-8 cursor-pointer">
         <SearchIcon />
-      </div>
+      </div> */}
     </div>
   );
 };

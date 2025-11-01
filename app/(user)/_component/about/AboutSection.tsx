@@ -9,7 +9,7 @@ import { AboutIntro } from "./AboutIntro"
 // ];
 const cards = [
   { id: 1, href: "/food", imageUrl: "/image/Food.png" },
-  { id: 2, href: "/sport", imageUrl: "/image/Training.png" },
+  { id: 2, href: "/lifestyle", imageUrl: "/image/Training.png" },
   { id: 3, href: "/tech", imageUrl: "/image/Tech.png" },
   { id: 4, href: "/money", imageUrl: "/image/Money.png" },
 ];

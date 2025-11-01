@@ -1,26 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ArrowLeftIcon, ArrowRighttIcon } from "../../_assets/icon";
 
-const slides = [
-  {
-    title: "Food",
-    image: "/Slider.png",
-  },
-  {
-    title: "Tech",
-    image: "/Slider4.jpg",
-  },
-  {
-    title: "Sport",
-    image: "/Slider3.jpg",
-  },
-  {
-    title: "Money",
-    image: "/Slider5.jpg",
-  },
+interface Slide {
+  title: string;
+  image: string;
+}
+
+const slides: Slide[] = [
+  { title: "Food", image: "/Slider.png" },
+  { title: "Tech", image: "/Slider4.jpg" },
+  { title: "Sport", image: "/Slider3.jpg" },
+  { title: "Money", image: "/Slider5.jpg" },
 ];
 
 export const HeroSection = () => {
@@ -29,28 +22,8 @@ export const HeroSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Gestion du slide automatique
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      handleNext();
-    }, 5000); // Changement toutes les 5 secondes
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [currentIndex]);
-
-  const handleNext = () => {
-    const nextIndex = (currentIndex + 1) % slides.length;
-    animateSlide(nextIndex);
-  };
-
-  const handlePrev = () => {
-    const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
-    animateSlide(prevIndex);
-  };
-
-  const animateSlide = (newIndex: number) => {
+  // ✅ Animation du slide
+  const animateSlide = useCallback((newIndex: number) => {
     if (!imageRef.current || !titleRef.current) return;
 
     const tl = gsap.timeline();
@@ -59,9 +32,7 @@ export const HeroSection = () => {
       opacity: 0,
       duration: 0.5,
       ease: "power2.out",
-      onComplete: () => {
-        setCurrentIndex(newIndex);
-      },
+      onComplete: () => setCurrentIndex(newIndex),
     });
 
     tl.fromTo(
@@ -75,7 +46,27 @@ export const HeroSection = () => {
       { y: 50, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.5, delay: 0.5 }
     );
-  };
+  }, []);
+
+  // ✅ Navigation slides avec useCallback pour stabilité
+  const handleNext = useCallback(() => {
+    const nextIndex = (currentIndex + 1) % slides.length;
+    animateSlide(nextIndex);
+  }, [currentIndex, animateSlide]);
+
+  const handlePrev = useCallback(() => {
+    const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+    animateSlide(prevIndex);
+  }, [currentIndex, animateSlide]);
+
+  // ✅ Slide automatique toutes les 5 secondes
+  useEffect(() => {
+    intervalRef.current = setInterval(handleNext, 5000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [handleNext]);
 
   return (
     <div className="relative w-full h-96 overflow-hidden">
@@ -94,7 +85,7 @@ export const HeroSection = () => {
       <div className="relative z-10 flex items-center justify-between h-full w-full md:px-8 px-2">
         <button
           onClick={handlePrev}
-          className="h-12 w-12 flex items-center justify-center  text-white/40  hover:text-white transition"
+          className="h-12 w-12 flex items-center justify-center text-white/40 hover:text-white transition"
         >
           <ArrowLeftIcon />
         </button>
@@ -108,7 +99,7 @@ export const HeroSection = () => {
 
         <button
           onClick={handleNext}
-          className="h-12 w-12 flex items-center justify-center  text-white/40  hover:text-white transition"
+          className="h-12 w-12 flex items-center justify-center text-white/40 hover:text-white transition"
         >
           <ArrowRighttIcon />
         </button>

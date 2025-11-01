@@ -1,6 +1,6 @@
 import { useParams, useRouter } from "next/navigation";
 
-type TrendingPostCardProps = {
+interface TrendingPostCardProps {
   id: string;
   author: string;
   description: string;
