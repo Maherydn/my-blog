@@ -3,17 +3,19 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ArrowLeftIcon, ArrowRighttIcon } from "../../_assets/icon";
+import { useRouter } from "next/navigation";
 
 interface Slide {
   title: string;
+  href: string;
   image: string;
 }
 
 const slides: Slide[] = [
-  { title: "Food", image: "/Slider.png" },
-  { title: "Tech", image: "/Slider4.jpg" },
-  { title: "Sport", image: "/Slider3.jpg" },
-  { title: "Money", image: "/Slider5.jpg" },
+  { title: "Food", image: "/Slider.png", href: "food" },
+  { title: "Tech", image: "/Slider4.jpg", href: "tech" },
+  { title: "Sport", image: "/Slider3.jpg", href: "lifestyle" },
+  { title: "Money", image: "/Slider5.jpg", href: "money" },
 ];
 
 export const HeroSection = () => {
@@ -21,6 +23,8 @@ export const HeroSection = () => {
   const imageRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const router = useRouter();
 
   // ✅ Animation du slide
   const animateSlide = useCallback((newIndex: number) => {
@@ -68,8 +72,14 @@ export const HeroSection = () => {
     };
   }, [handleNext]);
 
+  const handleClick = (href: string) => {
+    router.push(`/${href}`);
+  };
   return (
-    <div className="relative w-full h-96 overflow-hidden">
+    <div
+      className="relative w-full h-96 overflow-hidden flex items-center"
+      onClick={() => handleClick(slides[currentIndex].href)}
+    >
       {/* Background image */}
       <div
         ref={imageRef}
@@ -82,10 +92,13 @@ export const HeroSection = () => {
       <div className="absolute inset-0 bg-black/20" />
 
       {/* Content */}
-      <div className="relative z-10 flex items-center justify-between h-full w-full md:px-8 px-2">
+      <div className="relative z-20 flex items-center justify-between h-fit w-full md:px-8 px-2 ">
         <button
-          onClick={handlePrev}
-          className="h-12 w-12 flex items-center justify-center text-white/40 hover:text-white transition"
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePrev();
+          }}
+          className="h-12 w-12 flex items-center justify-center text-white/40 hover:text-white transition cursor-pointer"
         >
           <ArrowLeftIcon />
         </button>
@@ -98,8 +111,11 @@ export const HeroSection = () => {
         </h2>
 
         <button
-          onClick={handleNext}
-          className="h-12 w-12 flex items-center justify-center text-white/40 hover:text-white transition"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleNext();
+          }}
+          className="h-12 w-12 flex items-center justify-center text-white/40 hover:text-white transition cursor-pointer"
         >
           <ArrowRighttIcon />
         </button>

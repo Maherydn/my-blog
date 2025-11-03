@@ -34,13 +34,13 @@ interface PostItemProps {
 }
 
 export const PostItem = ({ data }: PostItemProps) => {
-  const [liked, setLiked] = useState(data.userHasLiked);
-  const [likeCount, setLikeCount] = useState(data.stats.likes);
+  const [liked, setLiked] = useState<boolean>(data.userHasLiked);
+  const [likeCount, setLikeCount] = useState<number>(Number(data.stats.likes));
 
   const { setCount, count } = useCounterStore();
 
   useEffect(() => {
-    setCount(data.stats.comments);
+    setCount(Number(data.stats.comments));
   }, [data.stats.comments, setCount]);
 
   const handleLike = async (postId: number) => {
@@ -56,6 +56,9 @@ export const PostItem = ({ data }: PostItemProps) => {
       commentsSection.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // console.log(typeof count);
+  // console.log(typeof likeCount);
 
   return (
     <div className="flex flex-col gap-4 w-full">

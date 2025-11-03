@@ -31,3 +31,18 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export const logout = async () => {
+  try {
+    await api.post('/logout'); // Appel API logout
+  } catch (error) {
+    console.error('Erreur lors de la déconnexion :', error);
+    // Même si l'API échoue, on supprime le token côté client
+  } finally {
+    // Supprime le token côté client
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+  }
+};

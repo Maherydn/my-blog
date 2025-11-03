@@ -1,33 +1,61 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { NavMenu } from "./NavMenu";
-import { WriteButton } from "./WriteButton";
-import { LogOut } from "lucide-react";
+import { LogOut, LogIn } from "lucide-react";
+import NavMenuMobile from "./NavMenuMobile";
+import BurgerButton from "./BurgerButton";
+import { logout } from "../../_lib/axios";
 
 export const Header = () => {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
-  const handleLogout = () => {
-    // Exemple : supprimer token
-    localStorage.removeItem("token");
-    // Redirection après déconnexion
-    router.push("/login");
+  // Vérifie le token au montage du composant
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+
+  // Fonction handleClick corrigée : async
+  const handleClick = async () => {
+    if (token) {
+      // Déconnexion via API
+      await logout();
+      setToken(null); // met à jour l'état
+    } else {
+      // Redirection vers login
+      router.push("/login");
+    }
   };
 
   return (
-    <div className="fixed bg-white z-50 h-20 w-full md:px-12 px-4 py-4 flex items-center justify-between border-b-slate-400 shadow">
+    <div className="fixed bg-white z-50 h-20 w-full md:px-12 px-4 py-4 flex items-center justify-between border-b border-slate-400 shadow">
       <Logo />
       <NavMenu />
-      <WriteButton />
 
+      {/* Menu mobile */}
+      {isOpen && <NavMenuMobile closeMenu={() => setIsOpen(false)} />}
+
+      {/* Burger button */}
+      <BurgerButton
+        isOpen={isOpen}
+        toggle={() => setIsOpen(!isOpen)}
+      />
+
+      {/* Login / Logout */}
       <button
-        onClick={handleLogout}
-        className="flex items-center gap-2 px-4 py-2 bg-red-500/90 text-white rounded hover:bg-red-600 transition"
+        onClick={handleClick}
+        className={`hidden lg:flex items-center gap-2 px-4 py-2 rounded-full transition cursor-pointer ${
+          token
+            ? "bg-red-500/90 text-white hover:bg-red-600"
+            : "bg-blue-500/90 text-white hover:bg-blue-600"
+        }`}
       >
-        <LogOut size={20} />
-        Logout
+        {token ? <LogOut size={20} /> : <LogIn size={20} />}
+        {token ? "Logout" : "Login"}
       </button>
     </div>
   );

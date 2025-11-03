@@ -4,7 +4,7 @@ import React from "react";
 
 type PostItemActionProps = {
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
-  count: string | number;
+  count: number;
   isLiked: boolean ,
   onClick?: () => void; 
 };

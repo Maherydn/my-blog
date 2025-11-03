@@ -203,3 +203,29 @@ export const SearchIcon: React.FC = () => (
     </defs>
   </svg>
 );
+
+type Props = {
+  isOpen: boolean;
+};
+
+export const MenuBurgerIcon: React.FC<Props> = ({ isOpen }) => {
+  return (
+    <div className=" flex flex-col justify-center items-end gap-2 cursor-pointer">
+      <span
+        className={`block  h-1.5 rounded-lg bg-slate-800 transition-transform duration-300 ${
+          isOpen ? "rotate-135 translate-y-4 w-12" : "w-8"
+        }`}
+      ></span>
+      <span
+        className={`block w-12 h-1.5 rounded-lg bg-slate-800 transition-opacity duration-300 ${
+          isOpen ? "opacity-0" : "opacity-100"
+        }`}
+      ></span>
+      <span
+        className={`block  h-1.5 rounded-lg bg-slate-800 transition-transform duration-300 ${
+          isOpen ? "-rotate-135 -translate-y-4 w-12" : " w-6"
+        }`}
+      ></span>
+    </div>
+  );
+};

@@ -128,6 +128,16 @@ export default function LoginPage() {
             S&apos;inscrire
           </Link>
         </p>
+
+        <p className="text-center text-white text-sm mt-6 cursor-pointer">
+          Ou{" "}
+          <span
+            onClick={() => router.push("/")}
+            className="text-blue-400 font-medium hover:underline ml-2"
+          >
+            continuer sans se connecter
+          </span>
+        </p>
       </form>
     </div>
   );
