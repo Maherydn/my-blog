@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { logout } from "../../_lib/axios";
+import ThemeToggle from "../ThemeToggle";
 
 interface NavMenuMobileProps {
   closeMenu: () => void;
@@ -22,8 +23,16 @@ const NavMenuMobile = ({ closeMenu }: NavMenuMobileProps) => {
 
   return (
     <div className="fixed top-0 right-0 w-full h-screen bg-gray-900/80 backdrop-blur-md p-10 flex flex-col items-center justify-center gap-10 text-white lg:hidden capitalize z-20">
+      <div className="absolute top-6 left-6">
+        <ThemeToggle />
+      </div>
       {navLinks.map((link) => (
-        <Link key={link.href} href={link.href} onClick={closeMenu} className="text-2xl hover:text-yellow-300">
+        <Link
+          key={link.href}
+          href={link.href}
+          onClick={closeMenu}
+          className="text-2xl hover:text-yellow-300"
+        >
           {link.label}
         </Link>
       ))}

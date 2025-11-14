@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,9 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased font-khad w-full h-full`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased  w-full h-full bg-white font-poppins dark:bg-dark`}
       >
-        <main className="overflow-hidden w-full">{children}</main>
+        <main className="overflow-hidden w-full">
+          <Providers>{children}</Providers>
+        </main>
         <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>

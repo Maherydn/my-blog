@@ -8,6 +8,7 @@ import { LogOut, LogIn } from "lucide-react";
 import NavMenuMobile from "./NavMenuMobile";
 import BurgerButton from "./BurgerButton";
 import { logout } from "../../_lib/axios";
+import ThemeToggle from "../ThemeToggle";
 
 export const Header = () => {
   const router = useRouter();
@@ -32,7 +33,7 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed bg-white z-50 h-20 w-full md:px-12 px-4 py-4 flex items-center justify-between border-b border-slate-400 shadow">
+    <div className="fixed bg-white z-50 h-20 w-full md:px-12 px-4 py-4 flex items-center justify-between border-b border-slate-400 shadow dark:bg-[#1f1f1f]">
       <Logo />
       <NavMenu />
 
@@ -40,10 +41,11 @@ export const Header = () => {
       {isOpen && <NavMenuMobile closeMenu={() => setIsOpen(false)} />}
 
       {/* Burger button */}
-      <BurgerButton
-        isOpen={isOpen}
-        toggle={() => setIsOpen(!isOpen)}
-      />
+      <BurgerButton isOpen={isOpen} toggle={() => setIsOpen(!isOpen)} />
+
+      <div className="hidden lg:block">
+        <ThemeToggle />
+      </div>
 
       {/* Login / Logout */}
       <button

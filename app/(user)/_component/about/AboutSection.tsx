@@ -16,7 +16,7 @@ const cards = [
 
 export const AboutSection = () => {
     return (
-        <div className="w-full py-24 px-12 flex flex-col justify-center items-center gap-20">
+        <div className="w-full py-24 px-12 flex flex-col justify-center items-center gap-20 ">
             <AboutIntro/>
             {/* <div className="xl:w-6xl w-full h-fit flex md:flex-row flex-col flex-wrap items-center justify-center gap-10 bg-black"> */}
             <div className="md:w-6xl w-full h-fit flex md:flex-row flex-col flex-wrap items-center justify-center gap-10">

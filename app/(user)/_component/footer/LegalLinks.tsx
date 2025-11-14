@@ -6,15 +6,15 @@ const links = [
 ];
 
 const LegalLinks = () => (
-  <div className="md:h-48 bg-white flex flex-col justify-center items-center gap-16 py-8">
+  <div className="md:h-48 bg-white flex flex-col justify-center items-center gap-16 py-8 dark:bg-[#1A1A1A]">
     <nav className="w-xl flex md:flex-row flex-col items-center justify-between text-slate-800 capitalize ">
       {links.map(({ label, href }) => (
-        <a key={label} href={href} className="hover:underline w-fit">
+        <a key={label} href={href} className="hover:underline w-fit dark:text-white">
           {label}
         </a>
       ))}
     </nav>
-    <p className="text-sm text-slate-500">2025 by mah</p>
+    <p className="text-sm text-slate-500 dark:text-white/80">2025 by mah</p>
   </div>
 );
 

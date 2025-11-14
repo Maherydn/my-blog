@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import CategoryClient from "./_components/CategoryClient";
 
 // Liste des catégories pour SSG
@@ -12,10 +13,7 @@ export default async function Page(props: unknown) {
   const { params } = props as { params: { category: string } };
   const category = params.category;
 
-  // Fetch côté serveur pour SSR / SSG
-  // const data: InitialData = await fetchPostsByCategory(category);
+  if (!categories.includes(category)) redirect("/404");
 
-  // if (!data?.success) notFound();
-
-  return <CategoryClient category={category}  />;
+  return <CategoryClient category={category} />;
 }
